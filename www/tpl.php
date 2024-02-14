@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="robots" content="index">
 
-    <title>Salary calculator</title>
+    <title>Mortgage calculator</title>
     <style>
         li {
             line-height: 1.5;

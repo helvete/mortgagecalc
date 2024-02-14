@@ -23,14 +23,15 @@ class index {
     }
 
     private function submitForm(): void {
-        $eng = new Engine();
-        echo "<pre>";
-        var_dump($_POST, $eng);
-        exit();
-        # TODO: validation
-        # TODO: print data
+        $inp = new CalculationInput($_POST);
+        if ($inp->hasErrors()) {
+            # TODO: validation
+            var_dump($inp->getErrors());
+            exit();
+        }
+        $result = Engine::calculate($inp);
+        include(__DIR__ . '/result_tpl.php');
     }
 }
-#phpinfo();
 require_once(__DIR__ . '/Engine.php');
 (new index())->run();
