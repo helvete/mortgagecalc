@@ -10,14 +10,17 @@ class Engine {
 
         $rest = $inp->getLoan();
         $monthRef = $inp->getPaymentStartAt();
+        $ep = $inp->getEarlyPayments();
         while ($rest > 0) {
             $mInterest = $rest * $inp->getInterest() / 12 / 100;
             $mAnnuity = $inp->getMonthly() - $mInterest;
             $rest -= $mAnnuity;
-            #if ($dt->format('Y-m') === '2023-04') {
-            #    $rest -= 710000;
-            #    $totalPaid += 710000;
-            #}
+            $earlyPaymentValue = $ep[$monthRef->format('Y-m')] ?? 0;
+            if ($earlyPaymentValue) {
+                $rest -= $earlyPaymentValue;
+                $totalPaid += $earlyPaymentValue;
+                $mAnnuity += $earlyPaymentValue;
+            }
             $logMonth = clone $monthRef;
             $calc->addMonthlyStats(
                 new MonthlyRecord($mInterest, $mAnnuity, $rest, $logMonth)
@@ -62,6 +65,7 @@ class CalculationInput {
     private ?\DateTime $paymentstartat;
     private ?float $interestpaidbeforefirst;
     private array $errors = [];
+    private array $earlyPayments = [];
 
     public function __construct(
         array $post,
@@ -85,8 +89,23 @@ class CalculationInput {
                     );
                     continue;
                 }
+            } elseif (preg_match('/^ep[1-2].*$/', $formName)) {
+                continue;
             }
             $this->errors[$formName] = sprintf('Invalid input: %s', $formVal);
+        }
+
+        for ($i = 1; $i < 3; $i++) {
+            if ($post["ep{$i}when"] && $post["ep{$i}payment"]) {
+                try {
+                    $dt = new \DateTime($post["ep{$i}when"]);
+                    $this->earlyPayments[$dt->format('Y-m')]
+                        = (float)$post["ep{$i}payment"];
+                } catch (\Throwable $t) {
+                    $this->errors["ep{$i}"] = 'Invalid format';
+                    return;
+                }
+            }
         }
     }
 
@@ -116,6 +135,10 @@ class CalculationInput {
 
     public function hasErrors(): bool {
         return (bool)count($this->errors);
+    }
+
+    public function getEarlyPayments(): array {
+        return $this->earlyPayments;
     }
 }
 

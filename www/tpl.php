@@ -59,6 +59,32 @@
                 </td><td>
 
                 <tr><td>
+                    Early payment #1
+                <label for="ep1payment">amount</label>
+                </td><td>
+                <input type="text" name="ep1payment" value="" />
+                </td><td>
+                <label for="ep1when">date</label>
+                </td><td>
+                <input type="text" name="ep1when" value="" />
+                </td><td>
+                    <span class='error'><?=$errors['ep1']??''?></span>
+                </td></tr>
+
+                <tr><td>
+                    Early payment #2
+                <label for="ep2payment">amount</label>
+                </td><td>
+                <input type="text" name="ep2payment" value="" />
+                </td><td>
+                <label for="ep2when">date</label>
+                </td><td>
+                <input type="text" name="ep2when" value="" />
+                </td><td>
+                    <span class='error'><?=$errors['ep2']??''?></span>
+                </td></tr>
+
+                <tr><td>
                 <input type="submit" name="submit" value="Calculate" />
                 </td><td>
             </table>
