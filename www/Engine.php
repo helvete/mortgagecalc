@@ -81,11 +81,12 @@ class CalculationInput {
                 } catch (\Throwable $t) {
                     $this->errors[$formName] = sprintf(
                         'Invalid format: %s',
-                        $t->getMessage(),
+                        $formVal ?: '""',
                     );
+                    continue;
                 }
             }
-            $this->errors[$formName] = 'Invalid input';
+            $this->errors[$formName] = sprintf('Invalid input: %s', $formVal);
         }
     }
 

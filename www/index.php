@@ -18,16 +18,15 @@ class index {
         }
     }
 
-    private function generateForm(): void {
+    private function generateForm(array $errors = []): void {
         include(__DIR__ . '/tpl.php');
     }
 
     private function submitForm(): void {
         $inp = new CalculationInput($_POST);
         if ($inp->hasErrors()) {
-            # TODO: validation
-            var_dump($inp->getErrors());
-            exit();
+            $this->generateForm($inp->getErrors());
+            return;
         }
         $result = Engine::calculate($inp);
         include(__DIR__ . '/result_tpl.php');
