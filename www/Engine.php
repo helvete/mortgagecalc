@@ -13,6 +13,14 @@ class Engine {
         $ep = $inp->getEarlyPayments();
         while ($rest > 0) {
             $mInterest = $rest * $inp->getInterest() / 12 / 100;
+            if ($mInterest >= $inp->getMonthly()) {
+                throw new \UnexpectedValueException(
+                    sprintf(
+                        "Invalid interest rate: %s, infinite loop prevention.",
+                        $inp->getInterest(),
+                    ),
+                );
+            }
             $mAnnuity = $inp->getMonthly() - $mInterest;
             $rest -= $mAnnuity;
             $earlyPaymentValue = $ep[$monthRef->format('Y-m')] ?? 0;

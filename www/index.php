@@ -28,7 +28,12 @@ class index {
             $this->generateForm($inp->getErrors());
             return;
         }
-        $result = Engine::calculate($inp);
+        try {
+            $result = Engine::calculate($inp);
+        } catch (\UnexpectedValueException $uve) {
+            $this->generateForm(['interest' => $uve->getMessage()]);
+            return;
+        }
         include(__DIR__ . '/result_tpl.php');
     }
 }

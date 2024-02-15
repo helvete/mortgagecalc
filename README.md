@@ -2,6 +2,10 @@
 
 TODO:
 
-* input validation
+* ~~input validation~~
 
-* support for partial premature payments
+* ~~support for partial premature payments~~
+
+* dynamic early payments or more than two static ones
+
+* support for interest rate update after fixed period expiration
