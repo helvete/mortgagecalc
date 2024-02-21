@@ -85,6 +85,32 @@
                 </td></tr>
 
                 <tr><td>
+                    Early payment #3
+                <label for="ep3payment">amount</label>
+                </td><td>
+                <input type="text" name="ep3payment" value="" />
+                </td><td>
+                <label for="ep3when">date</label>
+                </td><td>
+                <input type="text" name="ep3when" value="" />
+                </td><td>
+                    <span class='error'><?=$errors['ep3']??''?></span>
+                </td></tr>
+
+                <tr><td>
+                    Early payment #4
+                <label for="ep4payment">amount</label>
+                </td><td>
+                <input type="text" name="ep4payment" value="" />
+                </td><td>
+                <label for="ep4when">date</label>
+                </td><td>
+                <input type="text" name="ep4when" value="" />
+                </td><td>
+                    <span class='error'><?=$errors['ep4']??''?></span>
+                </td></tr>
+
+                <tr><td>
                 <input type="submit" name="submit" value="Calculate" />
                 </td><td>
             </table>

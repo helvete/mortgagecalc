@@ -9,6 +9,9 @@
         li {
             line-height: 1.5;
         }
+        tr.early td {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -30,7 +33,8 @@
 <?php
 foreach ($result->getMonthlyStats() as $stat) {
     printf(
-        '<tr><td>%s</td><td>%.2f</td><td>%.2f</td><td>%.2f</td></tr>',
+        '<tr class="%s"><td>%s</td><td>%.2f</td><td>%.2f</td><td>%.2f</td></tr>',
+        $stat->isEarlyPaymentIncluded() ? 'early' : '',
         $stat->getMonthRef()->format('d.m.Y'),
         $stat->getInterestPart(),
         $stat->getAnnuityPart(),

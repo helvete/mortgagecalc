@@ -31,7 +31,13 @@ class Engine {
             }
             $logMonth = clone $monthRef;
             $calc->addMonthlyStats(
-                new MonthlyRecord($mInterest, $mAnnuity, $rest, $logMonth)
+                new MonthlyRecord(
+                    $mInterest,
+                    $mAnnuity,
+                    $rest,
+                    $logMonth,
+                    (bool)$earlyPaymentValue,
+                ),
             );
             $monthRef->add(new \DateInterval('P1M'));
             $totalPaid += $inp->getMonthly();
@@ -47,6 +53,7 @@ class MonthlyRecord {
         private float $annuityPart,
         private float $loanRemaining,
         private \DateTime $monthRef,
+        private bool $earlyIncluded,
     ) {}
 
     public function getInterestPart(): float {
@@ -63,6 +70,10 @@ class MonthlyRecord {
 
     public function getMonthRef(): \DateTime {
         return $this->monthRef;
+    }
+
+    public function isEarlyPaymentIncluded(): bool {
+        return $this->earlyIncluded;
     }
 }
 
@@ -97,13 +108,12 @@ class CalculationInput {
                     );
                     continue;
                 }
-            } elseif (preg_match('/^ep[1-2].*$/', $formName)) {
+            } elseif (preg_match('/^ep[1-4].*$/', $formName)) {
                 continue;
             }
             $this->errors[$formName] = sprintf('Invalid input: %s', $formVal);
         }
-
-        for ($i = 1; $i < 3; $i++) {
+        for ($i = 1; $i < 5; $i++) {
             if ($post["ep{$i}when"] && $post["ep{$i}payment"]) {
                 try {
                     $dt = new \DateTime($post["ep{$i}when"]);
