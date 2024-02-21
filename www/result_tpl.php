@@ -19,7 +19,7 @@
     <div>
 
         <div>
-            Total paid: <b><?= $result->getTotalPaid() ?></b>
+            Total paid: <b><?= number_format($result->getTotalPaid(), 2, thousands_separator: '') ?></b>
             <a href='/'>[new calculation]</a>
         </div>
         <br />
