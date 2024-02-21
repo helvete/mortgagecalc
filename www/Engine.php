@@ -22,11 +22,15 @@ class Engine {
                 );
             }
             $mAnnuity = $inp->getMonthly() - $mInterest;
-            $rest -= $mAnnuity;
+            if ($rest < $inp->getMonthly()) {
+                $mAnnuity = $rest;
+                $rest = 0;
+            } else {
+                $rest -= $mAnnuity;
+            }
             $earlyPaymentValue = $ep[$monthRef->format('Y-m')] ?? 0;
             if ($earlyPaymentValue) {
                 $rest -= $earlyPaymentValue;
-                $totalPaid += $earlyPaymentValue;
                 $mAnnuity += $earlyPaymentValue;
             }
             $logMonth = clone $monthRef;
@@ -40,7 +44,7 @@ class Engine {
                 ),
             );
             $monthRef->add(new \DateInterval('P1M'));
-            $totalPaid += $inp->getMonthly();
+            $totalPaid += $mInterest + $mAnnuity;
         }
         $calc->setTotalPaid($totalPaid);
         return $calc;
